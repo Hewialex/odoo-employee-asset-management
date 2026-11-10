@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- =========================================================
+         ASSET FORM VIEW
+    ========================================================== -->
+    <record id="view_asset_asset_form" model="ir.ui.view">
+        <field name="name">asset.asset.form</field>
+        <field name="model">asset.asset</field>
+        <field name="arch" type="xml">
+            <form string="Asset">
+                <header>
+                    <button name="action_set_available"
+                            string="Set Available"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="status in ['available', 'disposed']"/>
+
+                    <button name="action_set_lost"
+                            string="Mark as Lost"
+                            type="object"
+                            class="btn-warning"
+                            invisible="status in ['lost', 'disposed']"/>
+
+                    <button name="action_dispose"
+                            string="Dispose Asset"
+                            type="object"
+                            class="btn-danger"
+                            invisible="status == 'disposed'"/>
+
+                    <button name="action_compute_depreciation"
+                            string="Recompute Depreciation"
+                            type="object"
+                            icon="fa-calculator"/>
+
+                    <field name="status"
+                           widget="statusbar"
+                           statusbar_visible="available,assigned,under_repair,returned,disposed"/>
+                </header>
+
+                <sheet>
+                    <!-- Smart Buttons -->
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_assignments"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-user">
+                            <field name="assignment_count"
+                                   widget="statinfo"
+                                   string="Assignments"/>
+                        </button>
+
+                        <button name="action_view_repairs"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-wrench">
+                            <field name="repair_count"
+                                   widget="statinfo"
+                                   string="Repairs"/>
+                        </button>
+                    </div>
+
+                    <!-- Image -->
+                    <field name="image"
+                           widget="image"
+                           class="oe_avatar"
+                           options="{'preview_image': 'image'}"/>
+
+                    <!-- Asset Title -->
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name"
+                                   placeholder="Asset Name..."/>
+                        </h1>
+                        <div>
+                            <field name="asset_ref" readonly="1"/>
+                        </div>
+                    </div>
+
+                    <!-- Asset Details -->
+                    <group>
+                        <group string="Asset Details">
+                            <field name="asset_tag"/>
+                            <field name="asset_type"/>
+                            <field name="serial_number"/>
+                            <field name="condition"/>
+                        </group>
+
+                        <group string="Dates">
+                            <field name="purchase_date"/>
+                            <field name="warranty_expiry_date"/>
+                            <field name="current_employee_id" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <!-- Financial Information -->
+                    <group>
+                        <group string="Financial">
+                            <field name="value"/>
+                            <field name="depreciation_rate"/>
+                            <field name="current_value" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <!-- Tabs -->
+                    <notebook>
+
+                        <!-- Assignments -->
+                        <page string="Assignments" name="assignments">
+                            <field name="assignment_ids" readonly="1">
+                                <tree decoration-success="state == 'returned'"
+                                      decoration-info="state == 'active'">
+                                    <field name="employee_id"/>
+                                    <field name="assignment_date"/>
+                                    <field name="expected_return_date"/>
+                                    <field name="actual_return_date"/>
+                                    <field name="condition_on_return"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <!-- Repair History -->
+                        <page string="Repair History" name="repairs">
+                            <field name="repair_ids" readonly="1">
+                                <tree decoration-success="status == 'done'"
+                                      decoration-danger="status == 'rejected'"
+                                      decoration-warning="status == 'in_progress'">
+                                    <field name="name"/>
+                                    <field name="requested_by"/>
+                                    <field name="request_date"/>
+                                    <field name="repair_cost"/>
+                                    <field name="status"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <!-- Notes -->
+                        <page string="Notes" name="notes">
+                            <field name="notes"
+                                   placeholder="Internal notes..."/>
+                        </page>
+
+                    </notebook>
+                </sheet>
+
+                <!-- Chatter -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+
+            </form>
+        </field>
+    </record>
+
+
+    <!-- =========================================================
+         ASSET TREE VIEW
+    ========================================================== -->
+    <record id="view_asset_asset_tree" model="ir.ui.view">
+        <field name="name">asset.asset.tree</field>
+        <field name="model">asset.asset</field>
+        <field name="arch" type="xml">
+            <tree string="Assets"
+                  decoration-muted="status == 'disposed'"
+                  decoration-danger="status in ('lost', 'disposed')"
+                  decoration-warning="status == 'under_repair'"
+                  decoration-success="status == 'available'"
+                  decoration-info="status == 'assigned'">
+
+                <field name="asset_ref"/>
+                <field name="name"/>
+                <field name="asset_tag"/>
+                <field name="asset_type"/>
+                <field name="serial_number"/>
+                <field name="current_employee_id"/>
+                <field name="condition"/>
+                <field name="value"/>
+                <field name="current_value"/>
+                <field name="status"/>
+                <field name="warranty_expiry_date"/>
+
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- =========================================================
+         ASSET KANBAN VIEW
+    ========================================================== -->
+    <record id="view_asset_asset_kanban" model="ir.ui.view">
+        <field name="name">asset.asset.kanban</field>
+        <field name="model">asset.asset</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="status"
+                    class="o_kanban_small_column">
+
+                <field name="name"/>
+                <field name="asset_tag"/>
+                <field name="asset_type"/>
+                <field name="status"/>
+                <field name="condition"/>
+                <field name="current_value"/>
+                <field name="current_employee_id"/>
+                <field name="image"/>
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click oe_kanban_card">
+
+                            <div class="o_kanban_image">
+                                <img t-att-src="kanban_image('asset.asset', 'image', record.id.raw_value)"
+                                     alt="Asset"
+                                     class="o_image_64_cover"/>
+                            </div>
+
+                            <div class="oe_kanban_details">
+
+                                <strong class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </strong>
+
+                                <div class="o_kanban_tags_section">
+                                    <span class="badge badge-pill badge-secondary">
+                                        <field name="asset_type"/>
+                                    </span>
+                                </div>
+
+                                <ul>
+                                    <li>
+                                        Tag:
+                                        <field name="asset_tag"/>
+                                    </li>
+
+                                    <li>
+                                        Condition:
+                                        <field name="condition"/>
+                                    </li>
+
+                                    <li>
+                                        Value:
+                                        <field name="current_value"/>
+                                    </li>
+
+                                    <t t-if="record.current_employee_id.raw_value">
+                                        <li>
+                                            Assigned:
+                                            <field name="current_employee_id"/>
+                                        </li>
+                                    </t>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+
+            </kanban>
+        </field>
+    </record>
+
+
+    <!-- =========================================================
+         ASSET GRAPH VIEW
+    ========================================================== -->
+    <record id="view_asset_asset_graph" model="ir.ui.view">
+        <field name="name">asset.asset.graph</field>
+        <field name="model">asset.asset</field>
+        <field name="arch" type="xml">
+            <graph string="Asset Overview" type="bar">
+                <field name="asset_type" type="row"/>
+                <field name="status" type="col"/>
+                <field name="current_value" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+
+    <!-- =========================================================
+         ASSET PIVOT VIEW
+    ========================================================== -->
+    <record id="view_asset_asset_pivot" model="ir.ui.view">
+        <field name="name">asset.asset.pivot</field>
+        <field name="model">asset.asset</field>
+        <field name="arch" type="xml">
+            <pivot string="Depreciation Summary">
+                <field name="asset_type" type="row"/>
+                <field name="status" type="col"/>
+                <field name="value" type="measure"/>
+                <field name="current_value" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+
+    <!-- =========================================================
+         ASSET SEARCH VIEW
+    ========================================================== -->
+    <record id="view_asset_asset_search" model="ir.ui.view">
+        <field name="name">asset.asset.search</field>
+        <field name="model">asset.asset</field>
+        <field name="arch" type="xml">
+
+            <search string="Search Assets">
+
+                <field name="name" string="Asset"/>
+                <field name="asset_tag"/>
+                <field name="serial_number"/>
+                <field name="current_employee_id"/>
+
+                <!-- Status Filters -->
+                <filter name="filter_available"
+                        string="Available"
+                        domain="[('status', '=', 'available')]"/>
+
+                <filter name="filter_assigned"
+                        string="Assigned"
+                        domain="[('status', '=', 'assigned')]"/>
+
+                <filter name="filter_under_repair"
+                        string="Under Repair"
+                        domain="[('status', '=', 'under_repair')]"/>
+
+                <filter name="filter_disposed"
+                        string="Disposed"
+                        domain="[('status', '=', 'disposed')]"/>
+
+                <separator/>
+
+                <!-- Asset Type Filters -->
+                <filter name="filter_laptop"
+                        string="Laptops"
+                        domain="[('asset_type', '=', 'laptop')]"/>
+
+                <filter name="filter_phone"
+                        string="Phones"
+                        domain="[('asset_type', '=', 'phone')]"/>
+
+                <filter name="filter_vehicle"
+                        string="Vehicles"
+                        domain="[('asset_type', '=', 'vehicle')]"/>
+
+                <separator/>
+
+                <!-- Warranty Filter -->
+                <filter name="filter_warranty_expired"
+                        string="Warranty Expired"
+                        domain="[('warranty_expiry_date', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
+
+                <!-- Group By -->
+                <group expand="0" string="Group By">
+
+                    <filter name="group_status"
+                            string="Status"
+                            context="{'group_by': 'status'}"/>
+
+                    <filter name="group_type"
+                            string="Asset Type"
+                            context="{'group_by': 'asset_type'}"/>
+
+                    <filter name="group_condition"
+                            string="Condition"
+                            context="{'group_by': 'condition'}"/>
+
+                    <filter name="group_employee"
+                            string="Assigned To"
+                            context="{'group_by': 'current_employee_id'}"/>
+
+                </group>
+
+            </search>
+        </field>
+    </record>
+
+
+    <!-- =========================================================
+         ASSET WINDOW ACTION
+    ========================================================== -->
+    <record id="action_asset_asset" model="ir.actions.act_window">
+
+        <field name="name">Assets</field>
+        <field name="res_model">asset.asset</field>
+        <field name="view_mode">tree,kanban,form,graph,pivot</field>
+        <field name="search_view_id" ref="view_asset_asset_search"/>
+
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No assets found. Create your first asset!
+            </p>
+        </field>
+
+    </record>
+
+</odoo>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="16" fill="#875A7B"/>
+  <text x="50%" y="55%" font-size="64" text-anchor="middle" dominant-baseline="middle"
+        font-family="Arial" fill="white">📦</text>
+</svg>
+

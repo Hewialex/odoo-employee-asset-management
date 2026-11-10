@@ -1,0 +1,105 @@
+
+<odoo>
+
+    <!-- =========================================================
+         ROOT MENU
+    ========================================================== -->
+    <menuitem id="menu_asset_root"
+              name="Asset Management"
+              sequence="85"
+              web_icon="employee_asset_lifecycle_management,static/description/icon.png"
+              groups="employee_asset_lifecycle_management.group_asset_employee"/>
+
+
+    <!-- =========================================================
+         ASSETS MENU
+    ========================================================== -->
+    <menuitem id="menu_asset_assets"
+              name="Assets"
+              parent="menu_asset_root"
+              sequence="10"
+              groups="employee_asset_lifecycle_management.group_asset_manager"/>
+
+    <menuitem id="menu_asset_asset_list"
+              name="All Assets"
+              parent="menu_asset_assets"
+              action="action_asset_asset"
+              sequence="10"
+              groups="employee_asset_lifecycle_management.group_asset_manager"/>
+
+
+    <!-- =========================================================
+         ASSIGNMENTS MENU
+    ========================================================== -->
+    <menuitem id="menu_asset_assignments"
+              name="Assignments"
+              parent="menu_asset_root"
+              sequence="20"
+              groups="employee_asset_lifecycle_management.group_asset_employee"/>
+
+    <menuitem id="menu_asset_assignment_list"
+              name="All Assignments"
+              parent="menu_asset_assignments"
+              action="action_asset_assignment"
+              sequence="10"
+              groups="employee_asset_lifecycle_management.group_asset_employee"/>
+
+
+    <!-- =========================================================
+         REPAIRS MENU
+    ========================================================== -->
+    <menuitem id="menu_asset_repairs"
+              name="Repairs"
+              parent="menu_asset_root"
+              sequence="30"
+              groups="employee_asset_lifecycle_management.group_asset_employee"/>
+
+    <menuitem id="menu_asset_repair_list"
+              name="Repair Requests"
+              parent="menu_asset_repairs"
+              action="action_asset_repair"
+              sequence="10"
+              groups="employee_asset_lifecycle_management.group_asset_employee"/>
+
+
+    <!-- =========================================================
+         REPORTING MENU
+    ========================================================== -->
+    <menuitem id="menu_asset_reporting"
+              name="Reporting"
+              parent="menu_asset_root"
+              sequence="40"
+              groups="employee_asset_lifecycle_management.group_asset_manager"/>
+
+    <menuitem id="menu_asset_report_per_employee"
+              name="Assets per Employee"
+              parent="menu_asset_reporting"
+              action="action_report_asset_per_employee"
+              sequence="10"
+              groups="employee_asset_lifecycle_management.group_asset_manager"/>
+
+    <menuitem id="menu_asset_report_depreciation"
+              name="Depreciation Summary"
+              parent="menu_asset_reporting"
+              action="action_report_asset_depreciation"
+              sequence="20"
+              groups="employee_asset_lifecycle_management.group_asset_manager"/>
+
+
+    <!-- =========================================================
+         CONFIGURATION MENU
+    ========================================================== -->
+    <menuitem id="menu_asset_configuration"
+              name="Configuration"
+              parent="menu_asset_root"
+              sequence="90"
+              groups="employee_asset_lifecycle_management.group_asset_hr_manager"/>
+
+    <menuitem id="menu_asset_depreciation_wizard"
+              name="Compute Depreciation"
+              parent="menu_asset_configuration"
+              action="action_asset_depreciation_wizard"
+              sequence="10"
+              groups="employee_asset_lifecycle_management.group_asset_hr_manager"/>
+
+</odoo>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         Report Action: Assets Per Employee
+    ═══════════════════════════════════════════════════════════════════ -->
+    <record id="action_report_asset_per_employee" model="ir.actions.act_window">
+        <field name="name">Assets per Employee</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Select employees and use Print to generate the report.
+            </p>
+        </field>
+    </record>
+
+    <record id="report_action_asset_per_employee" model="ir.actions.report">
+        <field name="name">Assets per Employee</field>
+        <field name="model">hr.employee</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">employee_asset_lifecycle_management.report_asset_per_employee_template</field>
+        <field name="report_file">employee_asset_lifecycle_management.report_asset_per_employee_template</field>
+        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         Report Action: Depreciation Summary
+    ═══════════════════════════════════════════════════════════════════ -->
+    <record id="action_report_asset_depreciation" model="ir.actions.act_window">
+        <field name="name">Depreciation Summary</field>
+        <field name="res_model">asset.asset</field>
+        <field name="view_mode">tree,pivot,graph</field>
+        <field name="domain">[('depreciation_rate', '&gt;', 0)]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="report_action_asset_depreciation" model="ir.actions.report">
+        <field name="name">Depreciation Summary</field>
+        <field name="model">asset.asset</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">employee_asset_lifecycle_management.report_asset_depreciation_template</field>
+        <field name="report_file">employee_asset_lifecycle_management.report_asset_depreciation_template</field>
+        <field name="binding_model_id" ref="model_asset_asset"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>
+

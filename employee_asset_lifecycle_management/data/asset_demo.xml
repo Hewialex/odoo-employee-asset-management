@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ═══════════════════════════════════════════════════════════
+             Demo Assets
+        ═══════════════════════════════════════════════════════════ -->
+        <record id="demo_asset_laptop_001" model="asset.asset">
+            <field name="name">Dell Latitude 5520</field>
+            <field name="asset_tag">TAG-LAPTOP-001</field>
+            <field name="asset_type">laptop</field>
+            <field name="serial_number">SN-DL5520-2022-001</field>
+            <field name="purchase_date">2022-01-15</field>
+            <field name="warranty_expiry_date">2025-01-15</field>
+            <field name="value">1200.00</field>
+            <field name="depreciation_rate">2.0</field>
+            <field name="status">available</field>
+            <field name="condition">good</field>
+        </record>
+
+        <record id="demo_asset_laptop_002" model="asset.asset">
+            <field name="name">HP EliteBook 840 G8</field>
+            <field name="asset_tag">TAG-LAPTOP-002</field>
+            <field name="asset_type">laptop</field>
+            <field name="serial_number">SN-HP840G8-2021-002</field>
+            <field name="purchase_date">2021-06-01</field>
+            <field name="warranty_expiry_date">2024-06-01</field>
+            <field name="value">1500.00</field>
+            <field name="depreciation_rate">2.5</field>
+            <field name="status">available</field>
+            <field name="condition">fair</field>
+        </record>
+
+        <record id="demo_asset_phone_001" model="asset.asset">
+            <field name="name">Samsung Galaxy S22</field>
+            <field name="asset_tag">TAG-PHONE-001</field>
+            <field name="asset_type">phone</field>
+            <field name="serial_number">SN-SGS22-2022-003</field>
+            <field name="purchase_date">2022-03-10</field>
+            <field name="warranty_expiry_date">2024-03-10</field>
+            <field name="value">800.00</field>
+            <field name="depreciation_rate">3.0</field>
+            <field name="status">available</field>
+            <field name="condition">good</field>
+        </record>
+
+        <record id="demo_asset_vehicle_001" model="asset.asset">
+            <field name="name">Toyota Corolla 2021</field>
+            <field name="asset_tag">TAG-VEH-001</field>
+            <field name="asset_type">vehicle</field>
+            <field name="serial_number">VIN-TC2021-0001</field>
+            <field name="purchase_date">2021-01-01</field>
+            <field name="warranty_expiry_date">2026-01-01</field>
+            <field name="value">25000.00</field>
+            <field name="depreciation_rate">1.5</field>
+            <field name="status">available</field>
+            <field name="condition">good</field>
+        </record>
+
+        <record id="demo_asset_idcard_001" model="asset.asset">
+            <field name="name">Employee ID Card - Engineering</field>
+            <field name="asset_tag">TAG-ID-001</field>
+            <field name="asset_type">id_card</field>
+            <field name="serial_number">ID-ENG-0001</field>
+            <field name="purchase_date">2023-01-01</field>
+            <field name="warranty_expiry_date">2026-01-01</field>
+            <field name="value">15.00</field>
+            <field name="depreciation_rate">0.0</field>
+            <field name="status">available</field>
+            <field name="condition">new</field>
+        </record>
+
+        <record id="demo_asset_monitor_001" model="asset.asset">
+            <field name="name">LG 27UK850 4K Monitor</field>
+            <field name="asset_tag">TAG-MON-001</field>
+            <field name="asset_type">monitor</field>
+            <field name="serial_number">SN-LG27-2021-001</field>
+            <field name="purchase_date">2021-09-01</field>
+            <field name="warranty_expiry_date">2024-09-01</field>
+            <field name="value">450.00</field>
+            <field name="depreciation_rate">2.0</field>
+            <field name="status">available</field>
+            <field name="condition">good</field>
+        </record>
+
+    </data>
+</odoo>
+

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         Asset Disposal Wizard View
+    ═══════════════════════════════════════════════════════════════════ -->
+    <record id="view_asset_dispose_wizard_form" model="ir.ui.view">
+        <field name="name">asset.dispose.wizard.form</field>
+        <field name="model">asset.dispose.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Dispose Asset">
+                <group>
+                    <field name="asset_id" readonly="1"/>
+                    <field name="disposal_date"/>
+                    <field name="disposal_reason"/>
+                    <field name="salvage_value"/>
+                </group>
+                <group string="Notes">
+                    <field name="disposal_notes" nolabel="1"/>
+                </group>
+                <footer>
+                    <button name="action_confirm_disposal" string="Confirm Disposal"
+                            type="object" class="btn-danger"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>
+

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         Depreciation Wizard View
+    ═══════════════════════════════════════════════════════════════════ -->
+    <record id="view_asset_depreciation_wizard_form" model="ir.ui.view">
+        <field name="name">asset.depreciation.wizard.form</field>
+        <field name="model">asset.depreciation.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Compute Depreciation">
+                <group>
+                    <field name="compute_all"/>
+                    <field name="asset_ids" widget="many2many_tags"
+                           invisible="compute_all"
+                           required="not compute_all"/>
+                </group>
+                <footer>
+                    <button name="action_compute" string="Compute Depreciation"
+                            type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         Depreciation Wizard Action
+    ═══════════════════════════════════════════════════════════════════ -->
+    <record id="action_asset_depreciation_wizard" model="ir.actions.act_window">
+        <field name="name">Compute Depreciation</field>
+        <field name="res_model">asset.depreciation.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>
+

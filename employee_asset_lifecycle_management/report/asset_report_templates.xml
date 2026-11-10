@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         Report: Assets Per Employee
+    ═══════════════════════════════════════════════════════════════════ -->
+    <template id="report_asset_per_employee_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2 class="text-center">Assets Per Employee Report</h2>
+                    <p class="text-muted text-center">
+                        Generated on: <span t-esc="context_today().strftime('%Y-%m-%d')"/>
+                    </p>
+
+                    <t t-set="employees" t-value="docs"/>
+                    <t t-foreach="employees" t-as="employee">
+                        <h4 t-esc="employee.name"/>
+                        <t t-set="assignments" t-value="employee.asset_assignment_ids if hasattr(employee, 'asset_assignment_ids') else []"/>
+                        <table class="table table-sm table-bordered">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Asset</th>
+                                    <th>Tag</th>
+                                    <th>Type</th>
+                                    <th>Assigned Date</th>
+                                    <th>Expected Return</th>
+                                    <th>Status</th>
+                                    <th>Condition</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="employee.mapped('asset_assignment_ids')" t-as="asgn">
+                                    <tr>
+                                        <td><t t-esc="asgn.asset_id.name"/></td>
+                                        <td><t t-esc="asgn.asset_id.asset_tag"/></td>
+                                        <td><t t-esc="asgn.asset_id.asset_type"/></td>
+                                        <td><t t-esc="asgn.assignment_date"/></td>
+                                        <td><t t-esc="asgn.expected_return_date or '-'"/></td>
+                                        <td><t t-esc="asgn.state"/></td>
+                                        <td><t t-esc="asgn.asset_id.condition"/></td>
+                                    </tr>
+                                </t>
+                                <t t-if="not employee.mapped('asset_assignment_ids')">
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted">
+                                            No assets assigned.
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <br/>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         Report: Depreciation Summary
+    ═══════════════════════════════════════════════════════════════════ -->
+    <template id="report_asset_depreciation_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2 class="text-center">Asset Depreciation Summary</h2>
+                    <p class="text-muted text-center">
+                        Generated on: <span t-esc="context_today().strftime('%Y-%m-%d')"/>
+                    </p>
+
+                    <table class="table table-sm table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Ref</th>
+                                <th>Asset Name</th>
+                                <th>Type</th>
+                                <th>Purchase Date</th>
+                                <th>Original Value</th>
+                                <th>Depr. Rate %</th>
+                                <th>Current Value</th>
+                                <th>Depreciated</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="asset">
+                                <tr>
+                                    <td><t t-esc="asset.asset_ref"/></td>
+                                    <td><t t-esc="asset.name"/></td>
+                                    <td><t t-esc="asset.asset_type"/></td>
+                                    <td><t t-esc="asset.purchase_date"/></td>
+                                    <td class="text-right">
+                                        <t t-esc="'%.2f' % asset.value"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="'%.2f' % asset.depreciation_rate"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="'%.2f' % asset.current_value"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="'%.2f' % (asset.value - asset.current_value)"/>
+                                    </td>
+                                    <td><t t-esc="asset.status"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                        <tfoot>
+                            <tr class="font-weight-bold">
+                                <td colspan="4">Total</td>
+                                <td class="text-right">
+                                    <t t-esc="'%.2f' % sum(docs.mapped('value'))"/>
+                                </td>
+                                <td/>
+                                <td class="text-right">
+                                    <t t-esc="'%.2f' % sum(docs.mapped('current_value'))"/>
+                                </td>
+                                <td class="text-right">
+                                    <t t-esc="'%.2f' % sum([a.value - a.current_value for a in docs])"/>
+                                </td>
+                                <td/>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>
+

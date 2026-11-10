@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Asset Reference Sequence -->
+        <record id="seq_asset_asset" model="ir.sequence">
+            <field name="name">Asset Reference</field>
+            <field name="code">asset.asset</field>
+            <field name="prefix">AST/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
+        <!-- Repair Reference Sequence -->
+        <record id="seq_asset_repair" model="ir.sequence">
+            <field name="name">Asset Repair Reference</field>
+            <field name="code">asset.repair</field>
+            <field name="prefix">REP/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
+    </data>
+</odoo>
+

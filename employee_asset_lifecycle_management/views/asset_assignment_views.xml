@@ -1,0 +1,191 @@
+
+<odoo>
+
+    <!-- =========================================================
+         ASSET ASSIGNMENT — FORM VIEW
+    ========================================================== -->
+    <record id="view_asset_assignment_form" model="ir.ui.view">
+        <field name="name">asset.assignment.form</field>
+        <field name="model">asset.assignment</field>
+        <field name="arch" type="xml">
+            <form string="Asset Assignment">
+
+                <header>
+                    <button name="action_return_asset"
+                            string="Return Asset"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="state == 'returned'"/>
+
+                    <field name="state"
+                           widget="statusbar"
+                           statusbar_visible="active,returned"/>
+                </header>
+
+                <sheet>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="display_name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Assignment Info">
+                            <field name="employee_id"
+                                   readonly="state == 'returned'"/>
+
+                            <field name="asset_id"
+                                   readonly="state == 'returned'"/>
+
+                            <field name="assigned_by"/>
+                        </group>
+
+                        <group string="Dates">
+                            <field name="assignment_date"
+                                   readonly="state == 'returned'"/>
+
+                            <field name="expected_return_date"/>
+                            <field name="actual_return_date"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Return Details"
+                               invisible="state == 'active'">
+                            <field name="condition_on_return"/>
+                        </group>
+                    </group>
+
+                    <group string="Remarks">
+                        <field name="remarks"
+                               nolabel="1"
+                               colspan="2"/>
+                    </group>
+
+                </sheet>
+
+                <!-- Chatter -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+
+            </form>
+        </field>
+    </record>
+
+
+    <!-- =========================================================
+         ASSET ASSIGNMENT — TREE VIEW
+    ========================================================== -->
+    <record id="view_asset_assignment_tree" model="ir.ui.view">
+        <field name="name">asset.assignment.tree</field>
+        <field name="model">asset.assignment</field>
+        <field name="arch" type="xml">
+
+            <tree string="Assignments"
+                  decoration-success="state == 'returned'"
+                  decoration-info="state == 'active'">
+
+                <field name="display_name"/>
+                <field name="employee_id"/>
+                <field name="asset_id"/>
+                <field name="assigned_by"/>
+                <field name="assignment_date"/>
+
+                <field name="expected_return_date"
+                       decoration-danger="expected_return_date and expected_return_date &lt; today and state == 'active'"/>
+
+                <field name="actual_return_date"/>
+                <field name="condition_on_return"/>
+                <field name="state"/>
+
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- =========================================================
+         ASSET ASSIGNMENT — SEARCH VIEW
+    ========================================================== -->
+    <record id="view_asset_assignment_search" model="ir.ui.view">
+        <field name="name">asset.assignment.search</field>
+        <field name="model">asset.assignment</field>
+        <field name="arch" type="xml">
+
+            <search string="Search Assignments">
+
+                <field name="employee_id"/>
+                <field name="asset_id"/>
+                <field name="assigned_by"/>
+
+                <!-- Assignment Status Filters -->
+                <filter name="filter_active"
+                        string="Active"
+                        domain="[('state', '=', 'active')]"/>
+
+                <filter name="filter_returned"
+                        string="Returned"
+                        domain="[('state', '=', 'returned')]"/>
+
+                <filter name="filter_overdue"
+                        string="Overdue"
+                        domain="[
+                            ('expected_return_date', '&lt;', context_today().strftime('%Y-%m-%d')),
+                            ('state', '=', 'active')
+                        ]"/>
+
+                <!-- Group By -->
+                <group expand="0" string="Group By">
+
+                    <filter name="group_employee"
+                            string="Employee"
+                            context="{'group_by': 'employee_id'}"/>
+
+                    <filter name="group_asset"
+                            string="Asset"
+                            context="{'group_by': 'asset_id'}"/>
+
+                    <filter name="group_state"
+                            string="State"
+                            context="{'group_by': 'state'}"/>
+
+                    <filter name="group_month"
+                            string="Month"
+                            context="{'group_by': 'assignment_date:month'}"/>
+
+                </group>
+
+            </search>
+        </field>
+    </record>
+
+
+    <!-- =========================================================
+         ASSET ASSIGNMENT — ACTION
+    ========================================================== -->
+    <record id="action_asset_assignment"
+            model="ir.actions.act_window">
+
+        <field name="name">Asset Assignments</field>
+        <field name="res_model">asset.assignment</field>
+        <field name="view_mode">tree,form</field>
+
+        <field name="search_view_id"
+               ref="view_asset_assignment_search"/>
+
+        <field name="context">
+            {'search_default_filter_active': 1}
+        </field>
+
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No assignments found. Assign your first asset!
+            </p>
+        </field>
+
+    </record>
+
+</odoo>
